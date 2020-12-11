@@ -1,0 +1,71 @@
+# Spring properties
+spring:
+  data:
+    mongodb:
+      database: ${mongo_database}
+      host: ${mongodb_host}
+      port: ${mongodb_port}
+      username: ${MONGO_INITDB_ROOT_USERNAME}
+      password: ${MONGO_INITDB_ROOT_PASSWORD}
+      authentication-database: ${MONGO_INITDB_DATABASE}
+
+# Metric properties
+metric:
+  # All metrics configuration
+  metrics:
+    not_updated_issues:
+      enabled: true
+      rate: 3600000 # ms
+
+    updated_issues:
+      enabled: true
+      rate: 3600000 # ms
+
+    issues_per_person:
+      enabled: false
+      rate: 3600000 # ms
+
+    person_worklog:
+      enabled: true
+      rate: 3600000 # ms
+
+  # Confluence reporting
+  reports:
+    published: true
+    rate: 86400000 # ms
+
+  # Thresholds
+  badIssuesCount:
+    redThreshold: 10      # percent
+    yellowThreshold: 0.05 # percent
+
+  goodIssuesCount:
+    redThreshold: 0       # percent
+    yellowThreshold: 0.9  # percent
+
+  reportedWorklogDifference:
+    redThreshold: 2       # tasks
+    yellowThreshold: 1    # tasks
+
+  maxIssuesCountPerSprint:
+    redThreshold: 7       # issues
+    yellowThreshold: 4    # issues
+
+  people: ${jira_people}
+
+# JIRA properties
+jira:
+  sprintSub: ${jira_sprint_sub}
+  url: https://${jira_host}:${jira_port}
+  username: ${okta_username}
+  password: ${okta_password}
+  project: ${jira_project}
+  board: ${jira_board}
+
+# Confluence properties
+confluence:
+  space: ${confluence_space}
+  parent: ${confluence_parent_page}
+  url: ${confluence_url}
+  username: ${okta_username}
+  password: ${okta_password}

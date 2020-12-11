@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:latest
+    env_file:
+      - config/properties.env
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/data/log
+    volumes:
+      - mongodbdata:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - test
+  sonarqube:
+    image: sonarqube:latest
+    # bind my plugins
+    volumes:
+      - ./sonarqube_extensions:/opt/sonarqube/extensions/new_plugins
+    ports:
+      - 9000:9000
+      - 9002:9002
+      - 9090:9000
+    # copy downloaded plugins
+    command: >
+      bash -c "cp -r /opt/sonarqube/extensions/new_plugins /opt/sonarqube/extensions/plugins
+      && /opt/sonarqube/bin/run.sh"
+    networks:
+      - test
+  server-app:
+    image: com.globallogic.jiraap/server-app
+    env_file:
+      - config/properties.env
+    environment:
+      - mongodb_host=mongodb
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    ports:
+      - 8080:8080
+      - 50505:50505
+    build:
+      context: .
+      dockerfile: ./src/main/docker/Dockerfile
+      args:
+        - JAR_FILE=./build/libs/jira-app-0.0.1-SNAPSHOT.jar
+    networks:
+      - test
+  client-app:
+    environment:
+      - NODE_ENV=development
+    links:
+      - server-app
+    depends_on:
+      - server-app
+    ports:
+      - 3000:3000
+      - 3001:3001
+      - 9060:9060
+    volumes:
+      # for hot reload
+      - ./src/main/webapp:/usr/src/app/src/main/webapp:rw
+    build:
+      context: .
+      dockerfile: ./src/main/webapp/Dockerfile
+    networks:
+      - test
+
+networks:
+  test:
+
+volumes:
+  mongodbdata:
+    external: true

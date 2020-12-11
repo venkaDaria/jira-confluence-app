@@ -1,0 +1,10 @@
+# Spring properties
+spring:
+  profiles:
+    active: dev
+
+management:
+  server:
+    servlet:
+      context-path: /manage
+    port: 8001

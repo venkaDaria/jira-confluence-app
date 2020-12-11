@@ -1,0 +1,21 @@
+%circle {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.red {
+  @extend %circle;
+  background-color: red;
+}
+
+.yellow {
+  @extend %circle;
+  background-color: yellow;
+}
+
+.green {
+  @extend %circle;
+  background-color: green;
+}

@@ -1,0 +1,45 @@
+#* @vtlvariable name="metricName" type="java.lang.String" *#
+#* @vtlvariable name="report" type="java.util.Set<com.globallogic.jiraapp.domain.reports.IssueReportItem>" *#
+
+<h2>$!metricName</h2>
+
+<table>
+    <thead>
+    <tr>
+        <td>Issue key</td>
+        <td>Summary</td>
+        <td>Assignee</td>
+        <td>Epic</td>
+        <td>Components</td>
+        <td>Labels</td>
+    </tr>
+    <tr>
+        <td>Date of update</td>
+        <td colspan="5">Comment text</td>
+    </tr>
+    </thead>
+</table>
+
+#foreach ($reportItem in $!report)
+<br/>
+
+<table>
+    <tbody>
+
+    <tr>
+        <td>$!reportItem.issueKey</td>
+        <td>$!reportItem.summary</td>
+        <td>$!reportItem.assignee</td>
+        <td>$!reportItem.epic</td>
+        <td>#if($!reportItem.components.size() > 0)$reportItem.components#{else}&mdash;#end</td>
+        <td>#if($reportItem.labels.size() > 0)$reportItem.labels#{else}&mdash;#end</td>
+    </tr>
+
+    <tr>
+        <td>$!reportItem.updatedDate</td>
+        <td colspan="5">$!reportItem.comment</td>
+    </tr>
+
+    </tbody>
+</table>
+#end

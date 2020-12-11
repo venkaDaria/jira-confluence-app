@@ -1,0 +1,24 @@
+/**
+ * SonarQube Support
+ *
+ * @use ./gradlew sonarqube
+ */
+
+// excluded files for coverage
+final def excludes = [
+]
+
+sonarqube {
+    properties {
+        property "sonar.exclusions", excludes
+    }
+}
+
+/**
+ * Sets Gradle version
+ *
+ * @use ./gradlew wrapper
+ */
+wrapper {
+    gradleVersion = '4.5.1'
+}
